@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 
 export async function PATCH(request, { params }) {
-  const { id } = params;
+  const id = params?.id;
+
+  if (!id || typeof id !== "string") {
+    return NextResponse.json({ error: "Task id is required" }, { status: 400 });
+  }
 
   try {
     const existingTask = await prisma.task.findUnique({ where: { id } });
@@ -43,7 +47,11 @@ export async function PATCH(request, { params }) {
 }
 
 export async function DELETE(_request, { params }) {
-  const { id } = params;
+  const id = params?.id;
+
+  if (!id || typeof id !== "string") {
+    return NextResponse.json({ error: "Task id is required" }, { status: 400 });
+  }
 
   try {
     const existingTask = await prisma.task.findUnique({ where: { id } });
