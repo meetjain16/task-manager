@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../lib/prisma";
+import { getPrisma } from "../../../lib/prisma";
 
 const QUADRANTS = new Set([
   "high-priority-high-importance",
@@ -9,6 +9,7 @@ const QUADRANTS = new Set([
 ]);
 
 export async function GET() {
+  const prisma = getPrisma();
   const tasks = await prisma.task.findMany({
     orderBy: { createdAt: "desc" },
   });
@@ -17,6 +18,7 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    const prisma = getPrisma();
     const body = await request.json();
     const taskText = typeof body.task === "string" ? body.task.trim() : "";
     const title = taskText || (typeof body.title === "string" ? body.title.trim() : "");

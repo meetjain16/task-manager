@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/prisma";
+import { getPrisma } from "../../../../lib/prisma";
 
 export async function PATCH(request, { params }) {
   const id = params?.id;
+  const prisma = getPrisma();
 
   if (!id || typeof id !== "string") {
     return NextResponse.json({ error: "Task id is required" }, { status: 400 });
@@ -48,6 +49,7 @@ export async function PATCH(request, { params }) {
 
 export async function DELETE(_request, { params }) {
   const id = params?.id;
+  const prisma = getPrisma();
 
   if (!id || typeof id !== "string") {
     return NextResponse.json({ error: "Task id is required" }, { status: 400 });
